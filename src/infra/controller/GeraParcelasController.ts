@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import InputDadosParcela from '../../domain/entity/InputDadosParcela';
-import GerarParcelasUseCase from '../../domain/usecase/GerarParcelasUseCase';
-import GeraParcelaTabelaPriceUseCase from '../../domain/usecase/impl/GeraParcelasTabelaPriceUseCase';
+import GerarParcelasUseCase from '../../application/usecase/GerarParcelasUseCase';
+import GeraParcelaTabelaPriceUseCase from '../../application/usecase/impl/GeraParcelasTabelaPriceUseCase';
 import Amortizacao from '../../domain/entity/Amortizacao';
 import AmortizacaoParcelasResponse from './response/AmortizacaoParcelasResponse';
 import ParcelaResponse from './response/ParcelaResponse';
