@@ -1,6 +1,6 @@
-import Amortizacao from "../../entity/Amortizacao";
-import InputDadosParcela from "../../entity/InputDadosParcela";
-import Parcela from "../../entity/Parcela";
+import Amortizacao from "../../../domain/entity/Amortizacao";
+import InputDadosParcela from "../../../domain/entity/InputDadosParcela";
+import Parcela from "../../../domain/entity/Parcela";
 import GerarParcelasUseCase from "../GerarParcelasUseCase";
 
 export default class GeraParcelaTabelaPriceUseCase implements GerarParcelasUseCase {

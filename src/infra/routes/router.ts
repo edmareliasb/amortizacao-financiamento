@@ -2,8 +2,8 @@
 import { Router, Request, Response } from 'express';
 import GeraParcelasController from '../controller/GeraParcelasController';
 import { validarCorpoDaSolicitacao } from './middleware/validarBodyGeraParcelar';
-import GeraParcelaTabelaPriceUseCase from '../../domain/usecase/impl/GeraParcelasTabelaPriceUseCase';
-import GeraParcelaTabelaSacUseCase from '../../domain/usecase/impl/GeraParcelasTabelaSacUseCase';
+import GeraParcelaTabelaPriceUseCase from '../../application/usecase/impl/GeraParcelasTabelaPriceUseCase';
+import GeraParcelaTabelaSacUseCase from '../../application/usecase/impl/GeraParcelasTabelaSacUseCase';
 
 const router = Router();
 const gerarParcelasPriceUseCase = new GeraParcelaTabelaPriceUseCase();
