@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import InputDadosParcela from '../../domain/entity/InputDadosParcela';
 import GerarParcelasUseCase from '../../application/usecase/GerarParcelasUseCase';
-import GeraParcelaTabelaPriceUseCase from '../../application/usecase/impl/GeraParcelasTabelaPriceUseCase';
 import Amortizacao from '../../domain/entity/Amortizacao';
 import AmortizacaoParcelasResponse from './response/AmortizacaoParcelasResponse';
 import ParcelaResponse from './response/ParcelaResponse';
@@ -34,7 +33,7 @@ export default class GeraParcelasController{
         const amortizacao: Amortizacao = this.gerarParcelasUseCase.gerarParcelas(inputDadosParcela);
         const response = this.mapGerarParcelasResponse(amortizacao);
 
-        res.json(response);
+        res.status(200).json(response);
     }
 
     mapGerarParcelasResponse(amortizacao: Amortizacao): AmortizacaoParcelasResponse {
