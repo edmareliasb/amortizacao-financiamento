@@ -1,16 +1,19 @@
 
 import { Router } from 'express';
+
+import "reflect-metadata";
+import {container} from 'tsyringe';
+
 import GeraParcelasController from '../controller/GeraParcelasController';
 import { validarCorpoDaSolicitacao } from './middleware/validarBodyGeraParcelar';
 import GeraParcelaTabelaPriceUseCase from '../../application/usecase/impl/GeraParcelasTabelaPriceUseCase';
-import GeraParcelaTabelaSacUseCase from '../../application/usecase/impl/GeraParcelasTabelaSacUseCase';
+
+//Registrando Price para definir uma dependencia padrão
+container.register("GerarParcelasUseCase", GeraParcelaTabelaPriceUseCase);
+const geraParcelasController = container.resolve(GeraParcelasController);
 
 const router = Router();
-const gerarParcelasPriceUseCase = new GeraParcelaTabelaPriceUseCase();
-
-const geraParcelasController = new GeraParcelasController(gerarParcelasPriceUseCase);
-
-router.route('/geraparcelas').post(validarCorpoDaSolicitacao, geraParcelasController.gerarParcelas);
+router.route('/geraparcelas').post(validarCorpoDaSolicitacao, (req, res) =>  geraParcelasController.gerarParcelas(req, res));
 router.route('/health').get(geraParcelasController.healthCheck);
 
 export default router;

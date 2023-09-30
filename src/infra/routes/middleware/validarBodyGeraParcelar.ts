@@ -25,8 +25,8 @@ export function validarCorpoDaSolicitacao(req: Request, res: Response, next: Nex
       return res.status(400).json({ error: 'Tipos de campo inválidos.' });
     }
 
-    if (tabela.toUpperCase() != 'PRICE' || 
-        tabela.toUpperCase() != 'SAC') {
+    if (tabela.toUpperCase() !== 'PRICE' &&
+        tabela.toUpperCase() !== 'SAC') {
           return res.status(400).json({ error: 'Valor inválido para campo Tabela. Informe PRICE ou SAC.' });
     }
   

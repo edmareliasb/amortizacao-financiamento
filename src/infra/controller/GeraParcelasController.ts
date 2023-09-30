@@ -1,25 +1,36 @@
 import { Request, Response } from 'express';
-import InputDadosParcela from '../../domain/entity/InputDadosParcela';
+
+import "reflect-metadata";
+import { injectable } from "tsyringe"; 
+import { inject } from "tsyringe"; 
+import { container } from 'tsyringe';
+
+import GeraParcelaTabelaSacUseCase from '../../application/usecase/impl/GeraParcelasTabelaSacUseCase';
+import GeraParcelaTabelaPriceUseCase from '../../application/usecase/impl/GeraParcelasTabelaPriceUseCase';
 import GerarParcelasUseCase from '../../application/usecase/GerarParcelasUseCase';
-import Amortizacao from '../../domain/entity/Amortizacao';
+
+import InputDadosParcela from '../../domain/entity/InputDadosParcela';
 import AmortizacaoParcelasResponse from './response/AmortizacaoParcelasResponse';
+import Amortizacao from '../../domain/entity/Amortizacao';
 import ParcelaResponse from './response/ParcelaResponse';
 
-
+@injectable()
 export default class GeraParcelasController{
 
     private gerarParcelasUseCase: GerarParcelasUseCase;
 
-    constructor(geraParcelasUse: GerarParcelasUseCase) {
+    constructor(@inject("GerarParcelasUseCase") geraParcelasUse: GerarParcelasUseCase) {
         this.gerarParcelasUseCase = geraParcelasUse;
-        }
+    }
 
     healthCheck(req: Request, res: Response) {
         res.json({ message: 'hello world with Typescript'});
     }
 
     gerarParcelas = (req: Request, res: Response) => {
-        const {valorFinanciamento, valorEntrada, taxaJuros, periodo} = req.body;
+        const {valorFinanciamento, valorEntrada, taxaJuros, periodo, tabela} = req.body;
+
+        this.resolveTabelaCalculo(tabela);
 
         const inputDadosParcela = new InputDadosParcela(
             Number(valorFinanciamento),
@@ -36,7 +47,7 @@ export default class GeraParcelasController{
         res.status(200).json(response);
     }
 
-    mapGerarParcelasResponse(amortizacao: Amortizacao): AmortizacaoParcelasResponse {
+    private mapGerarParcelasResponse(amortizacao: Amortizacao): AmortizacaoParcelasResponse {
         const parcelasResponse: ParcelaResponse[] = 
             amortizacao.getParcelas().map((parcela) => {
                 return new ParcelaResponse(parcela.getValorParcela(), 
@@ -55,5 +66,13 @@ export default class GeraParcelasController{
         return response;
     }
 
-   
+    private resolveTabelaCalculo(tabela: String) {
+        if (tabela === 'PRICE') {
+            this.gerarParcelasUseCase = container.resolve(GeraParcelaTabelaPriceUseCase);
+        }
+        if (tabela === 'SAC') {
+            this.gerarParcelasUseCase = container.resolve(GeraParcelaTabelaSacUseCase);
+        }
+    }
+
 }

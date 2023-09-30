@@ -2,11 +2,15 @@ import Amortizacao from "../../../domain/entity/Amortizacao";
 import InputDadosParcela from "../../../domain/entity/InputDadosParcela";
 import Parcela from "../../../domain/entity/Parcela";
 import GerarParcelasUseCase from "../GerarParcelasUseCase";
+import { injectable } from "tsyringe"; 
 
+@injectable()
 export default class GeraParcelaTabelaSacUseCase implements GerarParcelasUseCase {
 
 
     public gerarParcelas(input: InputDadosParcela): Amortizacao {        
+        console.log('Gerando calculo de Financiamento Tabela SAC');
+
         let saldoDevedor: number = input.getValorFinanciamento() - input.getValorEntrada();
         
         let peridoContrato: number = input.getPeriodo();
@@ -26,9 +30,6 @@ export default class GeraParcelaTabelaSacUseCase implements GerarParcelasUseCase
 
             const parcela = new Parcela(valoresArredondados.prestacao, valoresArredondados.amortizacao, valoresArredondados.valorJuros, valoresArredondados.saldoDevedor);
             parcelas.push(parcela);
-
-            console.log('Prestacao SAC: %s Juros: %s Amortizacao: %s Saldo Devedor: %s', 
-                prestacao, valoresArredondados.valorJuros, valoresArredondados.amortizacao, valoresArredondados.saldoDevedor);
         }
 
         const amortizacao = new Amortizacao(parcelas);
